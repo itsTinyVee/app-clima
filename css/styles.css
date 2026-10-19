@@ -1,0 +1,143 @@
+/* Reglas base: box-sizing border-box hace que padding y borde cuenten dentro
+   del ancho declarado. Sin esto, un input con width: 100% y padding se
+   saldría de la pantalla y provocaría scroll horizontal en el celular. */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* Cuerpo de la página.
+   - font-family: fuente del sistema; carga al instante y se ve nativa en cada
+     dispositivo (San Francisco en iOS, Roboto en Android, Segoe UI en Windows).
+   - max-width 480px + margin 0 auto: en pantallas grandes el contenido se
+     queda en una columna angosta y centrada; en celular ocupa todo el ancho.
+   - padding 16px: margen lateral pedido; también deja aire arriba y abajo.
+   - min-height 100vh + flex en columna + justify-content center: centra el
+     contenido verticalmente. Se declara 100dvh después como mejora: en móviles
+     tiene en cuenta la barra del navegador, que 100vh ignora.
+   - Los colores están definidos aquí con valores sobrios de alto contraste. */
+body {
+  margin: 0;
+  padding: 16px;
+  max-width: 480px;
+  min-height: 100vh;
+  min-height: 100dvh;
+  margin-inline: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 16px;
+  font-family: system-ui, sans-serif;
+  color: #1f2937;
+  background: #f9fafb;
+}
+
+/* Título. 2rem (32px) es grande sin ocupar mucho espacio en pantallas
+   angostas; el margen en 0 evita el espacio extra por defecto del h1, ya que
+   el espacio entre elementos lo controla el gap del body. */
+h1 {
+  margin: 0;
+  font-size: 2rem;
+  text-align: center;
+}
+
+/* Formulario: input y botón en una fila. flex-wrap permite que el botón baje
+   a una segunda línea si la pantalla es muy angosta, en lugar de desbordarse. */
+form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+/* Campo de texto.
+   - font-size 16px: iOS Safari hace zoom automático al enfocar campos con
+     menos de 16px, y esto lo evita.
+   - flex: 1 + min-width 0: el input ocupa el espacio sobrante; min-width 0
+     deja que se encoja (por defecto los inputs tienen un ancho mínimo que
+     podría causar scroll horizontal).
+   - padding 12px: área táctil cómoda para el dedo.
+   - borde gris de 1px con esquinas redondeadas de 8px: se ve limpio. */
+input {
+  flex: 1 1 200px;
+  min-width: 0;
+  padding: 12px;
+  font-family: inherit;
+  font-size: 16px;
+  color: inherit;
+  background: #ffffff;
+  border: 1px solid #9ca3af;
+  border-radius: 8px;
+}
+
+/* Al enfocar el campo se muestra un contorno azul visible, importante para
+   quien navega con teclado. No se quita el outline sin dejar un reemplazo. */
+input:focus {
+  outline: 2px solid #2563eb;
+  outline-offset: 1px;
+  border-color: #2563eb;
+}
+
+/* Botón.
+   - Fondo azul con texto blanco: contraste suficiente para leerse bien.
+   - padding 12px 20px y font-size 16px: tamaño táctil cómodo (más de 44px de
+     alto aprox.) y coherente con el input.
+   - cursor pointer: indica que se puede hacer clic. */
+button {
+  padding: 12px 20px;
+  font-family: inherit;
+  font-size: 16px;
+  font-weight: 600;
+  color: #ffffff;
+  background: #2563eb;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+/* Estado hover: un azul más oscuro avisa visualmente que el botón responde.
+   También se aplica al enfocar con teclado (focus-visible). */
+button:hover,
+button:focus-visible {
+  background: #1d4ed8;
+}
+
+/* Resultado del clima.
+   - font-size 1.5rem (24px): texto grande y legible de un vistazo.
+   - fondo azul muy claro y borde del mismo tono: destaca sin ser agresivo.
+   - overflow-wrap anywhere: si un nombre de ciudad es muy largo, se parte en
+     lugar de desbordar la pantalla.
+   - :empty lo oculta cuando no tiene texto, para que no quede una caja vacía
+     (el JS lo vacía con textContent = ""). */
+#resultado {
+  padding: 16px;
+  font-size: 1.5rem;
+  line-height: 1.4;
+  text-align: center;
+  color: #1e3a8a;
+  background: #dbeafe;
+  border: 1px solid #bfdbfe;
+  border-radius: 8px;
+  overflow-wrap: anywhere;
+}
+
+/* Mensaje de error.
+   - Texto rojo oscuro (#991b1b) sobre fondo rojo muy claro: lectura cómoda y
+     contraste adecuado; el borde rojo lo distingue del resultado.
+   - Se oculta cuando está vacío, igual que #resultado. */
+#error {
+  padding: 16px;
+  font-size: 1rem;
+  line-height: 1.4;
+  text-align: center;
+  color: #991b1b;
+  background: #fee2e2;
+  border: 1px solid #fca5a5;
+  border-radius: 8px;
+  overflow-wrap: anywhere;
+}
+
+#resultado:empty,
+#error:empty {
+  display: none;
+}
